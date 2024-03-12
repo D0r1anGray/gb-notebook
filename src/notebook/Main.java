@@ -17,6 +17,5 @@ public class Main {
         UserController controller = new UserController(repository);
         UserView view = new UserView(controller);
         view.run();
-
     }
 }
