@@ -2,9 +2,11 @@ package notebook.controller;
 
 import notebook.model.User;
 import notebook.model.repository.GBRepository;
+import notebook.util.UserValidator;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class UserController {
     private final GBRepository repository;
@@ -35,5 +37,26 @@ public class UserController {
     public void updateUser(String userId, User update) {
         update.setId(Long.parseLong(userId));
         repository.update(Long.parseLong(userId), update);
+    }
+
+    public void deleteUser(String id){
+        if(repository.delete(Long.parseLong(id))){
+            System.out.println("Пользователь под номером " + id + " удалён");
+        }
+    }
+
+    public User createUser() {
+        String firstName = promptController("Имя: ");
+        String lastName = promptController("Фамилия: ");
+        String phone = promptController("Номер телефона: ");
+
+        UserValidator validator = new UserValidator();
+        return validator.validate(new User(firstName,lastName,phone));
+    }
+
+    private String promptController(String message) {
+        Scanner in = new Scanner(System.in);
+        System.out.print(message);
+        return in.nextLine();
     }
 }
